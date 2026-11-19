@@ -1,0 +1,29 @@
+services:
+  tapo-charging-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tapo-charging-bot:latest
+    container_name: tapo-charging-bot
+    restart: unless-stopped
+
+    # network_mode: host enables direct LAN Wi-Fi communication with the Tapo smart plug
+    network_mode: host
+
+    env_file:
+      - .env
+
+    environment:
+      - DATABASE_PATH=/app/data/tapo_charging.db
+      - PYTHONUNBUFFERED=1
+      - TZ=${TZ:-Europe/Madrid}
+
+    volumes:
+      - ./data:/app/data
+      - /etc/localtime:/etc/localtime:ro
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

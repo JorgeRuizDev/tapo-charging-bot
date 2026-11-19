@@ -1,0 +1,20 @@
+[Unit]
+Description=Tapo EV & Device Charging Monitor Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+User=jorge
+WorkingDirectory=/home/jorge/_STORAGE/tapo-charging-bot
+ExecStart=/home/jorge/_STORAGE/tapo-charging-bot/venv/bin/python -m src.main
+Restart=always
+RestartSec=10
+EnvironmentFile=/home/jorge/_STORAGE/tapo-charging-bot/.env
+
+# Hardening / Sandboxing
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=tapo-charging-bot
+
+[Install]
+WantedBy=multi-user.target
